@@ -1,0 +1,1 @@
+<%@ tag pageEncoding="UTF-8"%>歡迎全世界

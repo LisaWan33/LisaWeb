@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+	</head>
+	<body>
+		<script type="text/javascript">
+			function beforeSubmit(){
+				//實作記住你的動作
+				var remember = document.getElementById('remember').checked;
+				if(remember){
+					var account = document.getElementById('account').value
+					var passwd = document.getElementById('passwd').value
+				
+					document.cookie = "account = "  + account;				
+					document.cookie = "passwd = "   + passwd;
+					document.cookie = "remember = " + remember;
+					
+					console.log(document.cookie);
+					//document.cookie:設定
+				}else{
+					//不要記住我的動作，儘管現在輸入資料，只要不要記住我，重開分頁不會出現在空格中
+					console.log("debug");
+					var cookies = document.cookie.split(";");
+					for(var i=0;i<cookies.length;i++){
+						var setting = cookies[i].split("=");
+						document.cookie = setting[0].trim() +
+						" =; expires=Thu, 01 Jan 1970 00:00:00 UTC";
+					}
+					
+					console.log(document.cookie);
+				}
+				
+				return false;
+			}
+			
+			var aryCookie={};
+			
+			parseCookie();
+			function parseCookie(){
+				var cookies = document.cookie.split(";");
+				cookies.forEach(
+					function(item,i){
+						var temp =item.trim().split("=");
+						aryCookie[temp[0]]=temp[1];
+						//key=value
+						//記住之前所打的密碼
+						//利用分割的方式，然後再用陣列帶進去
+					}		
+				);
+			}
+			
+			function getCookie(key){
+				return aryCookie[key];
+			}
+			
+		</script>
+		<form action="Lisa78.jsp" onsubmit="return beforeSubmit();">
+			Account:  <input name="account"  id="account"><br />
+			Password: <input name="passwd"   id="passwd"><br />
+			<input type="submit" value="Login" />
+			<input type="checkbox" id="remember" /> Remember Me
+		</form>
+		
+		<script type="text/javascript">
+			if(getCookie('account')){
+				document.getElementById('account').value = getCookie('account');
+			}
+			
+			if(getCookie('passwd')){
+				document.getElementById('passwd').value = getCookie('passwd');
+			}
+			
+			if(getCookie('remember')){
+				document.getElementById('remember').checked = getCookie('remember');
+			}
+		
+		
+		</script>
+	</body>
+</html>
